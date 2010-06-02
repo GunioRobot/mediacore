@@ -93,7 +93,14 @@ var SlugManager = new Class({
 	},
 
 	slugify: function(title){
-		return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, '');
+	    return title.
+		replace(/[şŞ]/g, "s").
+		replace(/[çÇ]/g, "c").
+		replace(/[ğĞ]/g, "g").
+		replace(/[ıİ]/g, "i").
+		replace(/[öÖ]/g, "o").
+		replace(/[üÜ]/g, "u").
+		toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, '');
 	}
 });
 

@@ -15,7 +15,7 @@
 """The application's model objects"""
 from mediacore.model.meta import DBSession, Base
 
-import re
+import re, unicodedata
 import webob.exc
 from sqlalchemy import sql, orm
 from sqlalchemy.orm import class_mapper
@@ -105,6 +105,7 @@ def slugify(string):
     :rtype: string
 
     """
+    string = unicodedata.normalize('NFKD', string).encode('ascii', 'ignore')
     string = unicode(string).lower()
     # Replace xhtml entities
     string = entities_to_unicode(string)
