@@ -199,7 +199,7 @@ BEGIN
 		WHERE media_id = OLD.id;
 END;//
 
--- 
+--
 -- Deletes the corresponding Search row
 CREATE TRIGGER media_ad
 	AFTER DELETE ON media FOR EACH ROW

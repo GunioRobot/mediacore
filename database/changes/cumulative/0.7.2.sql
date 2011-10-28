@@ -251,7 +251,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES 
+INSERT INTO `settings` VALUES
 (1,'email_media_uploaded',NULL),
 (2,'email_comment_posted',NULL),
 (3,'email_support_requests',NULL),

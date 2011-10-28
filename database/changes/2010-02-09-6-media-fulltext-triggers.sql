@@ -33,7 +33,7 @@ BEGIN
 		WHERE media_id = OLD.id;
 END;//
 
--- 
+--
 -- Deletes the corresponding Search row
 DROP TRIGGER IF EXISTS media_ad//
 CREATE TRIGGER media_ad

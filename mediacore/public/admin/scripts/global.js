@@ -69,7 +69,7 @@ var QuickSearch = new Class({
 
 var QSOverText = new Class({
 	Extends: OverText,
-	
+
 	getLabelElement: function() {
 		var els = $$('label[for='+this.element.id+']');
 		if (els.length > 0) {

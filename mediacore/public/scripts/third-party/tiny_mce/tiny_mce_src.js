@@ -583,7 +583,7 @@ tinymce.create('tinymce.util.Dispatcher', {
 
 			return o;
 		},
-	
+
 		toAbsolute : function(u, nh) {
 			var u = new tinymce.util.URI(u, {base_uri : this});
 
@@ -1010,7 +1010,7 @@ tinymce.create('static tinymce.util.XHR', {
 			t.files = {};
 			t.cssFlicker = false;
 			t.counter = 0;
-			t.boxModel = !tinymce.isIE || d.compatMode == "CSS1Compat"; 
+			t.boxModel = !tinymce.isIE || d.compatMode == "CSS1Compat";
 			t.stdMode = d.documentMode === 8;
 
 			t.settings = s = tinymce.extend({
@@ -1308,7 +1308,7 @@ tinymce.create('static tinymce.util.XHR', {
 					case 'float':
 						isIE ? s.styleFloat = v : s.cssFloat = v;
 						break;
-					
+
 					default:
 						s[na] = v || '';
 				}
@@ -1420,7 +1420,7 @@ tinymce.create('static tinymce.util.XHR', {
 						}
 
 						break;
-					
+
 					case "shape":
 						e.setAttribute('_mce_style', v);
 						break;
@@ -3633,19 +3633,19 @@ var Sizzle = function(selector, context, results, seed) {
 	if ( context.nodeType !== 1 && context.nodeType !== 9 ) {
 		return [];
 	}
-	
+
 	if ( !selector || typeof selector !== "string" ) {
 		return results;
 	}
 
 	var parts = [], m, set, checkSet, check, mode, extra, prune = true, contextXML = isXML(context);
-	
+
 	// Reset the position of the chunker regexp (start from head)
 	chunker.lastIndex = 0;
-	
+
 	while ( (m = chunker.exec(selector)) !== null ) {
 		parts.push( m[1] );
-		
+
 		if ( m[2] ) {
 			extra = RegExp.rightContext;
 			break;
@@ -3774,7 +3774,7 @@ Sizzle.find = function(expr, context, isXML){
 
 	for ( var i = 0, l = Expr.order.length; i < l; i++ ) {
 		var type = Expr.order[i], match;
-		
+
 		if ( (match = Expr.match[ type ].exec( expr )) ) {
 			var left = RegExp.leftContext;
 
@@ -4036,7 +4036,7 @@ var Expr = Sizzle.selectors = {
 		},
 		ATTR: function(match, curLoop, inplace, result, not, isXML){
 			var name = match[1].replace(/\\/g, "");
-			
+
 			if ( !isXML && Expr.attrMap[name] ) {
 				match[1] = Expr.attrMap[name];
 			}
@@ -4062,7 +4062,7 @@ var Expr = Sizzle.selectors = {
 			} else if ( Expr.match.POS.test( match[0] ) || Expr.match.CHILD.test( match[0] ) ) {
 				return true;
 			}
-			
+
 			return match;
 		},
 		POS: function(match){
@@ -4196,20 +4196,20 @@ var Expr = Sizzle.selectors = {
 					if ( first == 1 && last == 0 ) {
 						return true;
 					}
-					
+
 					var doneName = match[0],
 						parent = elem.parentNode;
-	
+
 					if ( parent && (parent.sizcache !== doneName || !elem.nodeIndex) ) {
 						var count = 0;
 						for ( node = parent.firstChild; node; node = node.nextSibling ) {
 							if ( node.nodeType === 1 ) {
 								node.nodeIndex = ++count;
 							}
-						} 
+						}
 						parent.sizcache = doneName;
 					}
-					
+
 					var diff = elem.nodeIndex - last;
 					if ( first == 0 ) {
 						return diff == 0;
@@ -4282,7 +4282,7 @@ var makeArray = function(array, results) {
 		results.push.apply( results, array );
 		return results;
 	}
-	
+
 	return array;
 };
 
@@ -4427,7 +4427,7 @@ if ( document.querySelectorAll ) (function(){
 	if ( div.querySelectorAll && div.querySelectorAll(".TEST").length === 0 ) {
 		return;
 	}
-	
+
 	Sizzle = function(query, context, extra, seed){
 		context = context || document;
 
@@ -4438,7 +4438,7 @@ if ( document.querySelectorAll ) (function(){
 				return makeArray( context.querySelectorAll(query), extra );
 			} catch(e){}
 		}
-		
+
 		return oldSizzle(query, context, extra, seed);
 	};
 
@@ -4881,9 +4881,9 @@ window.tinymce.dom.Sizzle = Sizzle;
 			el = dom.get(t.id);
 
 		tinymce.each(
-				('getPos,getRect,getParent,add,setStyle,getStyle,setStyles,' + 
-				'setAttrib,setAttribs,getAttrib,addClass,removeClass,' + 
-				'hasClass,getOuterHTML,setOuterHTML,remove,show,hide,' + 
+				('getPos,getRect,getParent,add,setStyle,getStyle,setStyles,' +
+				'setAttrib,setAttribs,getAttrib,addClass,removeClass,' +
+				'hasClass,getOuterHTML,setOuterHTML,remove,show,hide,' +
 				'isHidden,setHTML,get').split(/,/)
 			, function(k) {
 				t[k] = function() {
@@ -5547,8 +5547,8 @@ window.tinymce.dom.Sizzle = Sizzle;
 					}
 
 					// If the anchor node is a element instead of a text node then return this element
-					if (tinymce.isWebKit && sel.anchorNode && sel.anchorNode.nodeType == 1) 
-						return sel.anchorNode.childNodes[sel.anchorOffset]; 
+					if (tinymce.isWebKit && sel.anchorNode && sel.anchorNode.nodeType == 1)
+						return sel.anchorNode.childNodes[sel.anchorOffset];
 				}
 
 				if (elm && elm.nodeType == 3)
@@ -5616,7 +5616,7 @@ window.tinymce.dom.Sizzle = Sizzle;
 			};
 
 			this.doc = getXML();
-			
+
 			// Since Opera and WebKit doesn't escape > into &gt; we need to do it our self to normalize the output for all browsers
 			this.valid = tinymce.isOpera || tinymce.isWebKit;
 
@@ -6957,89 +6957,89 @@ tinymce.dom.TreeWalker = function(start_node, root_node) {
 		H : 'G|F',
 		G : 'br|span|bdo',
 		F : 'object|applet|img|map|iframe'
-	}, 'script[]' + 
-		'style[]' + 
-		'object[#|param|X|form|a|H|K|N|O|Q]' + 
-		'param[]' + 
-		'p[S]' + 
-		'a[Z]' + 
-		'br[]' + 
-		'span[S]' + 
-		'bdo[S]' + 
-		'applet[#|param|X|form|a|H|K|N|O|Q]' + 
-		'h1[S]' + 
-		'img[]' + 
-		'map[X|form|Q|area]' + 
-		'h2[S]' + 
-		'iframe[#|X|form|a|H|K|N|O|Q]' + 
-		'h3[S]' + 
-		'tt[S]' + 
-		'i[S]' + 
-		'b[S]' + 
-		'u[S]' + 
-		's[S]' + 
-		'strike[S]' + 
-		'big[S]' + 
-		'small[S]' + 
-		'font[S]' + 
-		'basefont[]' + 
-		'em[S]' + 
-		'strong[S]' + 
-		'dfn[S]' + 
-		'code[S]' + 
-		'q[S]' + 
-		'samp[S]' + 
-		'kbd[S]' + 
-		'var[S]' + 
-		'cite[S]' + 
-		'abbr[S]' + 
-		'acronym[S]' + 
-		'sub[S]' + 
-		'sup[S]' + 
-		'input[]' + 
-		'select[optgroup|option]' + 
-		'optgroup[option]' + 
-		'option[]' + 
-		'textarea[]' + 
-		'label[S]' + 
-		'button[#|p|T|div|U|W|table|G|object|applet|img|map|K|N|Q]' + 
-		'h4[S]' + 
-		'ins[#|X|form|a|H|K|N|O|Q]' + 
-		'h5[S]' + 
-		'del[#|X|form|a|H|K|N|O|Q]' + 
-		'h6[S]' + 
-		'div[#|X|form|a|H|K|N|O|Q]' + 
-		'ul[li]' + 
-		'li[#|X|form|a|H|K|N|O|Q]' + 
-		'ol[li]' + 
-		'dl[dt|dd]' + 
-		'dt[S]' + 
-		'dd[#|X|form|a|H|K|N|O|Q]' + 
-		'menu[li]' + 
-		'dir[li]' + 
-		'pre[ZA]' + 
-		'hr[]' + 
-		'blockquote[#|X|form|a|H|K|N|O|Q]' + 
-		'address[S|p]' + 
-		'center[#|X|form|a|H|K|N|O|Q]' + 
-		'noframes[#|X|form|a|H|K|N|O|Q]' + 
-		'isindex[]' + 
-		'fieldset[#|legend|X|form|a|H|K|N|O|Q]' + 
-		'legend[S]' + 
-		'table[caption|col|colgroup|thead|tfoot|tbody|tr]' + 
-		'caption[S]' + 
-		'col[]' + 
-		'colgroup[col]' + 
-		'thead[tr]' + 
-		'tr[th|td]' + 
-		'th[#|X|form|a|H|K|N|O|Q]' + 
-		'form[#|X|a|H|K|N|O|Q]' + 
-		'noscript[#|X|form|a|H|K|N|O|Q]' + 
-		'td[#|X|form|a|H|K|N|O|Q]' + 
-		'tfoot[tr]' + 
-		'tbody[tr]' + 
-		'area[]' + 
-		'base[]' + 
+	}, 'script[]' +
+		'style[]' +
+		'object[#|param|X|form|a|H|K|N|O|Q]' +
+		'param[]' +
+		'p[S]' +
+		'a[Z]' +
+		'br[]' +
+		'span[S]' +
+		'bdo[S]' +
+		'applet[#|param|X|form|a|H|K|N|O|Q]' +
+		'h1[S]' +
+		'img[]' +
+		'map[X|form|Q|area]' +
+		'h2[S]' +
+		'iframe[#|X|form|a|H|K|N|O|Q]' +
+		'h3[S]' +
+		'tt[S]' +
+		'i[S]' +
+		'b[S]' +
+		'u[S]' +
+		's[S]' +
+		'strike[S]' +
+		'big[S]' +
+		'small[S]' +
+		'font[S]' +
+		'basefont[]' +
+		'em[S]' +
+		'strong[S]' +
+		'dfn[S]' +
+		'code[S]' +
+		'q[S]' +
+		'samp[S]' +
+		'kbd[S]' +
+		'var[S]' +
+		'cite[S]' +
+		'abbr[S]' +
+		'acronym[S]' +
+		'sub[S]' +
+		'sup[S]' +
+		'input[]' +
+		'select[optgroup|option]' +
+		'optgroup[option]' +
+		'option[]' +
+		'textarea[]' +
+		'label[S]' +
+		'button[#|p|T|div|U|W|table|G|object|applet|img|map|K|N|Q]' +
+		'h4[S]' +
+		'ins[#|X|form|a|H|K|N|O|Q]' +
+		'h5[S]' +
+		'del[#|X|form|a|H|K|N|O|Q]' +
+		'h6[S]' +
+		'div[#|X|form|a|H|K|N|O|Q]' +
+		'ul[li]' +
+		'li[#|X|form|a|H|K|N|O|Q]' +
+		'ol[li]' +
+		'dl[dt|dd]' +
+		'dt[S]' +
+		'dd[#|X|form|a|H|K|N|O|Q]' +
+		'menu[li]' +
+		'dir[li]' +
+		'pre[ZA]' +
+		'hr[]' +
+		'blockquote[#|X|form|a|H|K|N|O|Q]' +
+		'address[S|p]' +
+		'center[#|X|form|a|H|K|N|O|Q]' +
+		'noframes[#|X|form|a|H|K|N|O|Q]' +
+		'isindex[]' +
+		'fieldset[#|legend|X|form|a|H|K|N|O|Q]' +
+		'legend[S]' +
+		'table[caption|col|colgroup|thead|tfoot|tbody|tr]' +
+		'caption[S]' +
+		'col[]' +
+		'colgroup[col]' +
+		'thead[tr]' +
+		'tr[th|td]' +
+		'th[#|X|form|a|H|K|N|O|Q]' +
+		'form[#|X|a|H|K|N|O|Q]' +
+		'noscript[#|X|form|a|H|K|N|O|Q]' +
+		'td[#|X|form|a|H|K|N|O|Q]' +
+		'tfoot[tr]' +
+		'tbody[tr]' +
+		'area[]' +
+		'base[]' +
 		'body[#|X|form|a|H|K|N|O|Q]'
 	);
 
@@ -7365,7 +7365,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 
 		postRender : function() {
 			var t = this;
-			
+
 			t.parent();
 
 			// Set pending state
@@ -8337,7 +8337,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 				h1 = DOM.createHTML('span', {'class' : 'mceAction ' + s['class']}, '');
 
 			h += '<td>' + DOM.createHTML('a', {id : t.id + '_action', href : 'javascript:;', 'class' : 'mceAction ' + s['class'], onclick : "return false;", onmousedown : 'return false;', title : s.title}, h1) + '</td>';
-	
+
 			h1 = DOM.createHTML('span', {'class' : 'mceOpen ' + s['class']});
 			h += '<td>' + DOM.createHTML('a', {id : t.id + '_open', href : 'javascript:;', 'class' : 'mceOpen ' + s['class'], onclick : "return false;", onmousedown : 'return false;', title : s.title}, h1) + '</td>';
 
@@ -8804,7 +8804,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 
 						// All done
 						if (l == co)
-							execCallback(s, 'oninit');					
+							execCallback(s, 'oninit');
 					});
 				}
 			});
@@ -9383,7 +9383,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 				if (isIE || (tinymce.isOpera && parseFloat(opera.version()) >= 9.5))
 					u = 'javascript:(function(){document.open();document.domain="' + document.domain + '";var ed = window.parent.tinyMCE.get("' + t.id + '");document.write(ed.iframeHTML);document.close();ed.setupIframe();})()';
 				else if (tinymce.isOpera)
-					u = 'javascript:(function(){document.open();document.domain="' + document.domain + '";document.close();ed.setupIframe();})()';					
+					u = 'javascript:(function(){document.open();document.domain="' + document.domain + '";document.close();ed.setupIframe();})()';
 			}
 
 			// Create iframe
@@ -9687,7 +9687,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 					if (o.set)
 						o.content = t.execCallback('cleanup_callback', 'insert_to_editor', o.content, o);
 
-					if (o.get)						
+					if (o.get)
 						o.content = t.execCallback('cleanup_callback', 'get_from_editor', o.content, o);
 				});
 			}
@@ -9783,7 +9783,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 					}, 100);
 				}
 			}, 1);
-	
+
 			e = null;
 		},
 
@@ -12349,7 +12349,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 		setControlType : function(n, c) {
 			return this._cls[n.toLowerCase()] = c;
 		},
-	
+
 		destroy : function() {
 			each(this.controls, function(c) {
 				c.destroy();

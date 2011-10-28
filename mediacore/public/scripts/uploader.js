@@ -167,7 +167,7 @@ var SwiffUploadManager = new Class({
 	uploadButton: null,
 	progressBar: null,
 	enabled: false,
-	
+
 	initialize: function(form, action, failurePage, baseUrl, typeFilter, browseButton, uploadButton, fileInfoDiv, statusDiv, messages, fileSizeMax) {
 		if (Browser.Platform.linux) {
 			// There's a bug in the flash player for linux that freezes the browser with swiff.uploader

@@ -57,7 +57,7 @@ provides: [MooTools.Lang]
 		},
 		cascades: ['en-US']
 	};
-	
+
 	var cascaded;
 
 	MooTools.lang = new Events();
@@ -178,7 +178,7 @@ license: MIT-style license.
 authors:
 - Aaron Newton
 
-requires: 
+requires:
 - core/1.2.4/Class
 - core:1.2.4/Element
 - /MooTools.More
@@ -318,7 +318,7 @@ Date.implement({
 
 	diff: function(date, resolution){
 		if ($type(date) == 'string') date = Date.parse(date);
-		
+
 		return ((date - this) / Date.units[resolution || 'day'](3, 3)).toInt(); // non-leap year, 30-day month
 	},
 
@@ -327,14 +327,14 @@ Date.implement({
 	},
 
 	getDayOfYear: function(){
-		return (Date.UTC(this.get('year'), this.get('mo'), this.get('date') + 1) 
+		return (Date.UTC(this.get('year'), this.get('mo'), this.get('date') + 1)
 			- Date.UTC(this.get('year'), 0, 1)) / Date.units.day();
 	},
 
 	getWeek: function(){
 		return (this.get('dayofyear') / 7).ceil();
 	},
-	
+
 	getOrdinal: function(day){
 		return Date.getMsg('ordinal', day || this.get('date'));
 	},
@@ -534,15 +534,15 @@ Date.extend({
 	},
 
 	parsePatterns: parsePatterns, // this is deprecated
-	
+
 	defineParser: function(pattern){
 		parsePatterns.push((pattern.re && pattern.handler) ? pattern : build(pattern));
 	},
-	
+
 	defineParsers: function(){
 		Array.flatten(arguments).each(Date.defineParser);
 	},
-	
+
 	define2DigitYearStart: function(year){
 		startYear = year % 100;
 		startCentury = year - startYear;
@@ -589,10 +589,10 @@ var currentLanguage;
 
 var recompile = function(language){
 	currentLanguage = language;
-	
+
 	keys.a = keys.A = regexOf('days');
 	keys.b = keys.B = regexOf('months');
-	
+
 	parsePatterns.each(function(pattern, i){
 		if (pattern.format) parsePatterns[i] = build(pattern.format);
 	});
@@ -600,7 +600,7 @@ var recompile = function(language){
 
 var build = function(format){
 	if (!currentLanguage) return {format: format};
-	
+
 	var parsed = [];
 	var re = (format.source || format) // allow format to be regex
 	 .replace(/%([a-z])/gi,
@@ -821,7 +821,7 @@ var URI = new Class({
 		this.setOptions(options);
 		var base = this.options.base || URI.base;
 		if(!uri) uri = base;
-		
+
 		if (uri && uri.parsed) this.parsed = $unlink(uri.parsed);
 		else this.set('value', uri.href || uri.toString(), base ? new URI(base) : false);
 	},
@@ -1006,7 +1006,7 @@ provides: [Element.Delegation]
 */
 
 (function(addEvent, removeEvent){
-	
+
 	var match = /(.*?):relay\(([^)]+)\)$/,
 		combinators = /[+>~\s]/,
 		splitType = function(type){
@@ -1116,7 +1116,7 @@ Element.implement({
 		if (vis(this)) return fn.apply(this);
 		var parent = this.getParent(),
 			restorers = [],
-			toMeasure = []; 
+			toMeasure = [];
 		while (!vis(parent) && parent != document.body) {
 			toMeasure.push(parent.expose());
 			parent = parent.getParent();
@@ -1280,7 +1280,7 @@ Element.implement({
 			allowNegative: false
 		}, options);
 		//compute the offset of the parent positioned element if this element is in one
-		var parentOffset = {x: 0, y: 0}, 
+		var parentOffset = {x: 0, y: 0},
 				parentPositioned = false;
 		/* dollar around getOffsetParent should not be necessary, but as it does not return
 		 * a mootools extended element in IE, an error occurs on the call to expose. See:
@@ -1400,13 +1400,13 @@ Element.implement({
 		}
 		if (options.ignoreMargins) {
 			pos.left += (
-				options.edge.x == 'right' ? dim['margin-right'] : 
-				options.edge.x == 'center' ? -dim['margin-left'] + ((dim['margin-right'] + dim['margin-left'])/2) : 
+				options.edge.x == 'right' ? dim['margin-right'] :
+				options.edge.x == 'center' ? -dim['margin-left'] + ((dim['margin-right'] + dim['margin-left'])/2) :
 					- dim['margin-left']
 			);
 			pos.top += (
-				options.edge.y == 'bottom' ? dim['margin-bottom'] : 
-				options.edge.y == 'center' ? -dim['margin-top'] + ((dim['margin-bottom'] + dim['margin-top'])/2) : 
+				options.edge.y == 'bottom' ? dim['margin-bottom'] :
+				options.edge.y == 'center' ? -dim['margin-top'] + ((dim['margin-bottom'] + dim['margin-top'])/2) :
 					- dim['margin-top']
 			);
 		}
@@ -1674,7 +1674,7 @@ $extend(OverText, {
 			return null; //the input or the text was destroyed
 		});
 	},
-	
+
 	update: function(){
 
 		return OverText.each(function(ot){
@@ -1771,7 +1771,7 @@ Fx.Scroll = new Class({
 	start: function(x, y){
 		if (!this.check(x, y)) return this;
 		var scrollSize = this.element.getScrollSize(),
-			scroll = this.element.getScroll(), 
+			scroll = this.element.getScroll(),
 			values = {x: x, y: y};
 		for (var z in values){
 			var max = scrollSize[z];
@@ -2229,17 +2229,17 @@ Drag.Move = new Class({
 	initialize: function(element, options){
 		this.parent(element, options);
 		element = this.element;
-		
+
 		this.droppables = $$(this.options.droppables);
 		this.container = document.id(this.options.container);
-		
+
 		if (this.container && $type(this.container) != 'element')
 			this.container = document.id(this.container.getDocument().body);
-		
+
 		var styles = element.getStyles('left', 'top', 'position');
 		if (styles.left == 'auto' || styles.top == 'auto')
 			element.setPosition(element.getPosition(element.getOffsetParent()));
-		
+
 		if (styles.position == 'static')
 			element.setStyle('position', 'absolute');
 
@@ -2250,16 +2250,16 @@ Drag.Move = new Class({
 
 	start: function(event){
 		if (this.container) this.options.limit = this.calculateLimit();
-		
+
 		if (this.options.precalculate){
 			this.positions = this.droppables.map(function(el){
 				return el.getCoordinates();
 			});
 		}
-		
+
 		this.parent(event);
 	},
-	
+
 	calculateLimit: function(){
 		var offsetParent = this.element.getOffsetParent(),
 			containerCoordinates = this.container.getCoordinates(offsetParent),
@@ -2291,17 +2291,17 @@ Drag.Move = new Class({
 			right += elementMargin.right;
 			bottom += elementMargin.bottom;
 		}
-		
+
 		if (this.element.getStyle('position') == 'relative'){
 			var coords = this.element.getCoordinates(offsetParent);
 			coords.left -= this.element.getStyle('left').toInt();
 			coords.top -= this.element.getStyle('top').toInt();
-			
+
 			left += containerBorder.left - coords.left;
 			top += containerBorder.top - coords.top;
 			right += elementMargin.left - coords.left;
 			bottom += elementMargin.top - coords.top;
-			
+
 			if (this.container != offsetParent){
 				left += containerMargin.left + offsetParentPadding.left;
 				top += (Browser.Engine.trident4 ? 0 : containerMargin.top) + offsetParentPadding.top;
@@ -2309,7 +2309,7 @@ Drag.Move = new Class({
 		} else {
 			left -= elementMargin.left;
 			top -= elementMargin.top;
-			
+
 			if (this.container == offsetParent){
 				right -= containerBorder.left;
 				bottom -= containerBorder.top;
@@ -2318,7 +2318,7 @@ Drag.Move = new Class({
 				top += containerCoordinates.top + containerBorder.top;
 			}
 		}
-		
+
 		return {
 			x: [left, right],
 			y: [top, bottom]
@@ -2444,7 +2444,7 @@ var Sortables = new Class({
 			this.elements.erase(element);
 			var start = element.retrieve('sortables:start');
 			(this.options.handle ? element.getElement(this.options.handle) || element : element).removeEvent('mousedown', start);
-			
+
 			return element;
 		}, this));
 	},
@@ -2453,7 +2453,7 @@ var Sortables = new Class({
 		return $$(Array.flatten(arguments).map(function(list){
 			this.lists.erase(list);
 			this.removeItems(list.getChildren());
-			
+
 			return list;
 		}, this));
 	},
@@ -2473,7 +2473,7 @@ var Sortables = new Class({
 				input.set('name', 'clone_' + i);
 			});
 		}
-		
+
 		return clone.inject(this.list).setPosition(element.getPosition(element.getOffsetParent()));
 	},
 

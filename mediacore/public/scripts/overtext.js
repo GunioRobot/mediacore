@@ -32,7 +32,7 @@ var OverTextManager = new Class({
 
 var CustomOverText = new Class({
 	Extends: OverText,
-	
+
 	getLabelElement: function() {
 		var els = $$('label[for='+this.element.id+']');
 		if (els.length > 0) {

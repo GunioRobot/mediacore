@@ -1,43 +1,43 @@
 /**
  * datepicker.js - MooTools Datepicker class
  * @version 1.16
- * 
+ *
  * by MonkeyPhysics.com
  *
  * Source/Documentation available at:
  * http://www.monkeyphysics.com/mootools/script/2/datepicker
- * 
+ *
  * --
- * 
+ *
  * Smoothly animating, very configurable and easy to install.
  * No Ajax, pure Javascript. 4 skins available out of the box.
- * 
+ *
  * --
  *
  * Some Rights Reserved
  * http://creativecommons.org/licenses/by-sa/3.0/
- * 
+ *
  */
 
 var DatePicker = new Class({
-	
+
 	Implements: Options,
-	
+
 	// working date, which we will keep modifying to render the calendars
 	d: '',
-	
+
 	// just so that we need not request it over and over
 	today: '',
-	
+
 	// current user-choice in date object format
-	choice: {}, 
-	
+	choice: {},
+
 	// size of body, used to animate the sliding
-	bodysize: {}, 
-	
+	bodysize: {},
+
 	// to check availability of next/previous buttons
-	limit: {}, 
-	
+	limit: {},
+
 	// element references:
 	attachTo: null,    // selector for target inputs
 	picker: null,      // main datepicker container
@@ -46,8 +46,8 @@ var DatePicker = new Class({
 	newContents: null, // used in animating from-view to new-view
 	input: null,       // original input element (used for input/output)
 	visual: null,      // visible input (used for rendering)
-	
-	options: { 
+
+	options: {
 		pickerClass: 'datepicker',
 		days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 		months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -69,13 +69,13 @@ var DatePicker = new Class({
 		maxDate: null, // same as minDate
 		debug: false,
 		toggleElements: null,
-		
+
 		// and some event hooks:
 		onShow: $empty,   // triggered when the datepicker pops up
 		onClose: $empty,  // triggered after the datepicker is closed (destroyed)
 		onSelect: $empty  // triggered when a date is selected
 	},
-	
+
 	initialize: function(attachTo, options) {
 		this.attachTo = attachTo;
 		this.setOptions(options).attach();
@@ -86,7 +86,7 @@ var DatePicker = new Class({
 		this.formatMinMaxDates();
 		document.addEvent('mousedown', this.close.bind(this));
 	},
-	
+
 	formatMinMaxDates: function() {
 		if (this.options.minDate && this.options.minDate.format) {
 			this.options.minDate = this.unformat(this.options.minDate.date, this.options.minDate.format);
@@ -98,7 +98,7 @@ var DatePicker = new Class({
 			this.options.maxDate.setSeconds(59);
 		}
 	},
-	
+
 	attach: function() {
 		// toggle the datepicker through a separate element?
 		if ($chk(this.options.toggleElements)) {
@@ -111,13 +111,13 @@ var DatePicker = new Class({
 				}.bind(this)
 			});
 		};
-		
-		// attach functionality to the inputs		
+
+		// attach functionality to the inputs
 		$$(this.attachTo).each(function(item, index) {
-			
+
 			// never double attach
 			if (item.retrieve('datepicker')) return;
-			
+
 			// determine starting value(s)
 			if ($chk(item.get('value'))) {
 				var init_clone_val = this.format(new Date(this.unformat(item.get('value'), this.options.inputOutputFormat)), this.options.format);
@@ -126,7 +126,7 @@ var DatePicker = new Class({
 			} else {
 				var init_clone_val = '';
 			}
-			
+
 			// create clone
 			var display = item.getStyle('display');
 			var clone = item
@@ -138,7 +138,7 @@ var DatePicker = new Class({
 			.setStyle('display', display)
 			.set('value', init_clone_val)
 			.inject(item, 'after');
-			
+
 			// events
 			if ($chk(this.options.toggleElements)) {
 				togglers[index]
@@ -173,10 +173,10 @@ var DatePicker = new Class({
 			}
 		}.bind(this));
 	},
-	
+
 	onFocus: function(original_input, visual_input) {
 		var init_visual_date, d = visual_input.getCoordinates();
-		
+
 		if ($chk(original_input.get('value'))) {
 			init_visual_date = this.unformat(original_input.get('value'), this.options.inputOutputFormat).valueOf();
 		} else {
@@ -188,13 +188,13 @@ var DatePicker = new Class({
 				init_visual_date = new Date(this.options.minDate.valueOf());
 			}
 		}
-		
+
 		this.show({ left: d.left + this.options.positionOffset.x, top: d.top + d.height + this.options.positionOffset.y }, init_visual_date);
 		this.input = original_input;
 		this.visual = visual_input;
 		this.options.onShow();
 	},
-	
+
 	dateToObject: function(d) {
 		return {
 			year: d.getFullYear(),
@@ -205,7 +205,7 @@ var DatePicker = new Class({
 			seconds: d.getSeconds()
 		};
 	},
-	
+
 	dateFromObject: function(values) {
 		var d = new Date();
 		d.setDate(1);
@@ -223,7 +223,7 @@ var DatePicker = new Class({
 		});
 		return d;
 	},
-	
+
 	show: function(position, timestamp) {
 		this.formatMinMaxDates();
 		if ($chk(timestamp)) {
@@ -237,7 +237,7 @@ var DatePicker = new Class({
 		this.render();
 		this.picker.setStyles(position);
 	},
-	
+
 	render: function(fx) {
 		if (!$chk(this.picker)) {
 			this.constructPicker();
@@ -248,13 +248,13 @@ var DatePicker = new Class({
 			this.newContents = o;
 			this.newContents.empty();
 		}
-		
+
 		// remember current working date
 		var startDate = new Date(this.d.getTime());
-		
+
 		// intially assume both left and right are allowed
 		this.limit = { right: false, left: false };
-		
+
 		// render! booty!
 		if (this.mode == 'decades') {
 			this.renderDecades();
@@ -266,24 +266,24 @@ var DatePicker = new Class({
 		} else {
 			this.renderMonth();
 		}
-		
+
 		this.picker.getElement('.previous').setStyle('visibility', this.limit.left ? 'hidden' : 'visible');
 		this.picker.getElement('.next').setStyle('visibility', this.limit.right ? 'hidden' : 'visible');
 		this.picker.getElement('.titleText').setStyle('cursor', this.allowZoomOut() ? 'pointer' : 'default');
-		
+
 		// restore working date
 		this.d = startDate;
-		
+
 		// if ever the opacity is set to '0' it was only to have us fade it in here
 		// refer to the constructPicker() function, which instantiates the picker at opacity 0 when fading is desired
 		if (this.picker.getStyle('opacity') == 0) {
 			this.picker.tween('opacity', 0, 1);
 		}
-		
+
 		// animate
 		if ($chk(fx)) this.fx(fx);
 	},
-	
+
 	fx: function(fx) {
 		if (fx == 'right') {
 			this.oldContents.setStyles({ left: 0, opacity: 1 });
@@ -299,20 +299,20 @@ var DatePicker = new Class({
 			this.newContents.setStyles({ opacity: 0, left: 0}).set('tween', { duration: this.options.animationDuration }).tween('opacity', 0, 1);
 		}
 	},
-	
+
 	constructPicker: function() {
 		this.picker = new Element('div', { 'class': this.options.pickerClass }).inject(document.body);
 		if (this.options.useFadeInOut) {
 			this.picker.setStyle('opacity', 0).set('tween', { duration: this.options.animationDuration });
 		}
-		
+
 		var h = new Element('div', { 'class': 'header' }).inject(this.picker);
 		var titlecontainer = new Element('div', { 'class': 'title' }).inject(h);
 		new Element('div', { 'class': 'previous' }).addEvent('click', this.previous.bind(this)).set('text', '«').inject(h);
 		new Element('div', { 'class': 'next' }).addEvent('click', this.next.bind(this)).set('text', '»').inject(h);
 		new Element('div', { 'class': 'closeButton' }).addEvent('click', this.close.bindWithEvent(this, true)).set('text', 'x').inject(h);
 		new Element('span', { 'class': 'titleText' }).addEvent('click', this.zoomOut.bind(this)).inject(titlecontainer);
-		
+
 		var b = new Element('div', { 'class': 'body' }).inject(this.picker);
 		this.bodysize = b.getSize();
 		this.slider = new Element('div', { styles: { position: 'absolute', top: 0, left: 0, width: 2 * this.bodysize.x, height: this.bodysize.y }})
@@ -320,16 +320,16 @@ var DatePicker = new Class({
 		this.oldContents = new Element('div', { styles: { position: 'absolute', top: 0, left: this.bodysize.x, width: this.bodysize.x, height: this.bodysize.y }}).inject(this.slider);
 		this.newContents = new Element('div', { styles: { position: 'absolute', top: 0, left: 0, width: this.bodysize.x, height: this.bodysize.y }}).inject(this.slider);
 	},
-	
+
 	renderTime: function() {
 		var container = new Element('div', { 'class': 'time' }).inject(this.newContents);
-		
+
 		if (this.options.timePickerOnly) {
 			this.picker.getElement('.titleText').set('text', 'Select a time');
 		} else {
 			this.picker.getElement('.titleText').set('text', this.format(this.d, 'j M, Y'));
 		}
-		
+
 		new Element('input', { type: 'text', 'class': 'hour' })
 			.set('value', this.leadZero(this.d.getHours()))
 			.addEvents({
@@ -347,7 +347,7 @@ var DatePicker = new Class({
 			})
 			.set('maxlength', 2)
 			.inject(container);
-			
+
 		new Element('input', { type: 'text', 'class': 'minutes' })
 			.set('value', this.leadZero(this.d.getMinutes()))
 			.addEvents({
@@ -365,9 +365,9 @@ var DatePicker = new Class({
 			})
 			.set('maxlength', 2)
 			.inject(container);
-		
+
 		new Element('div', { 'class': 'separator' }).set('text', ':').inject(container);
-		
+
 		new Element('input', { type: 'submit', value: 'OK', 'class': 'ok' })
 			.addEvents({
 				click: function(e) {
@@ -378,17 +378,17 @@ var DatePicker = new Class({
 			.set('maxlength', 2)
 			.inject(container);
 	},
-	
+
 	renderMonth: function() {
 		var month = this.d.getMonth();
-		
+
 		this.picker.getElement('.titleText').set('text', this.options.months[month] + ' ' + this.d.getFullYear());
-		
+
 		this.d.setDate(1);
 		while (this.d.getDay() != this.options.startDay) {
 			this.d.setDate(this.d.getDate() - 1);
 		}
-		
+
 		var container = new Element('div', { 'class': 'days' }).inject(this.newContents);
 		var titles = new Element('div', { 'class': 'titles' }).inject(container);
 		var d, i, classes, e, weekcontainer;
@@ -396,11 +396,11 @@ var DatePicker = new Class({
 		for (d = this.options.startDay; d < (this.options.startDay + 7); d++) {
 			new Element('div', { 'class': 'title day day' + (d % 7) }).set('text', this.options.days[(d % 7)].substring(0,this.options.dayShort)).inject(titles);
 		}
-		
+
 		var available = false;
 		var t = this.today.toDateString();
 		var currentChoice = this.dateFromObject(this.choice).toDateString();
-		
+
 		for (i = 0; i < 42; i++) {
 			classes = [];
 			classes.push('day');
@@ -408,11 +408,11 @@ var DatePicker = new Class({
 			if (this.d.toDateString() == t) classes.push('today');
 			if (this.d.toDateString() == currentChoice) classes.push('selected');
 			if (this.d.getMonth() != month) classes.push('otherMonth');
-			
+
 			if (i % 7 == 0) {
 				weekcontainer = new Element('div', { 'class': 'week week'+(Math.floor(i/7)) }).inject(container);
 			}
-			
+
 			e = new Element('div', { 'class': classes.join(' ') }).set('text', this.d.getDate()).inject(weekcontainer);
 			if (this.limited('date')) {
 				e.addClass('unavailable');
@@ -438,23 +438,23 @@ var DatePicker = new Class({
 		}
 		if (!available) this.limit.right = true;
 	},
-	
+
 	renderYear: function() {
 		var month = this.today.getMonth();
 		var thisyear = this.d.getFullYear() == this.today.getFullYear();
 		var selectedyear = this.d.getFullYear() == this.choice.year;
-		
+
 		this.picker.getElement('.titleText').set('text', this.d.getFullYear());
 		this.d.setMonth(0);
-		
+
 		var i, e;
 		var available = false;
 		var container = new Element('div', { 'class': 'months' }).inject(this.newContents);
-		
+
 		for (i = 0; i <= 11; i++) {
 			e = new Element('div', { 'class': 'month month'+(i+1)+(i == month && thisyear ? ' today' : '')+(i == this.choice.month && selectedyear ? ' selected' : '') })
 			.set('text', this.options.monthShort ? this.options.months[i].substring(0, this.options.monthShort) : this.options.months[i]).inject(container);
-			
+
 			if (this.limited('month')) {
 				e.addClass('unavailable');
 				if (available) {
@@ -475,7 +475,7 @@ var DatePicker = new Class({
 		}
 		if (!available) this.limit.right = true;
 	},
-	
+
 	renderDecades: function() {
 		// start neatly at interval (eg. 1980 instead of 1987)
 		while (this.d.getFullYear() % this.options.yearsPerPage > 0) {
@@ -483,19 +483,19 @@ var DatePicker = new Class({
 		}
 
 		this.picker.getElement('.titleText').set('text', this.d.getFullYear() + '-' + (this.d.getFullYear() + this.options.yearsPerPage - 1));
-		
+
 		var i, y, e;
 		var available = false;
 		var container = new Element('div', { 'class': 'years' }).inject(this.newContents);
-		
+
 		if ($chk(this.options.minDate) && this.d.getFullYear() <= this.options.minDate.getFullYear()) {
 			this.limit.left = true;
 		}
-		
+
 		for (i = 0; i < this.options.yearsPerPage; i++) {
 			y = this.d.getFullYear();
 			e = new Element('div', { 'class': 'year year' + i + (y == this.today.getFullYear() ? ' today' : '') + (y == this.choice.year ? ' selected' : '') }).set('text', y).inject(container);
-			
+
 			if (this.limited('year')) {
 				e.addClass('unavailable');
 				if (available) {
@@ -520,34 +520,34 @@ var DatePicker = new Class({
 			this.limit.right = true;
 		}
 	},
-	
+
 	limited: function(type) {
 		var cs = $chk(this.options.minDate);
 		var ce = $chk(this.options.maxDate);
 		if (!cs && !ce) return false;
-		
+
 		switch (type) {
 			case 'year':
 				return (cs && this.d.getFullYear() < this.options.minDate.getFullYear()) || (ce && this.d.getFullYear() > this.options.maxDate.getFullYear());
-				
+
 			case 'month':
 				// todo: there has got to be an easier way...?
 				var ms = ('' + this.d.getFullYear() + this.leadZero(this.d.getMonth())).toInt();
 				return cs && ms < ('' + this.options.minDate.getFullYear() + this.leadZero(this.options.minDate.getMonth())).toInt()
 					|| ce && ms > ('' + this.options.maxDate.getFullYear() + this.leadZero(this.options.maxDate.getMonth())).toInt()
-				
+
 			case 'date':
 				return (cs && this.d < this.options.minDate) || (ce && this.d > this.options.maxDate);
 		}
 	},
-	
+
 	allowZoomOut: function() {
 		if (this.mode == 'time' && this.options.timePickerOnly) return false;
 		if (this.mode == 'decades') return false;
 		if (this.mode == 'year' && !this.options.yearPicker) return false;
 		return true;
 	},
-	
+
 	zoomOut: function() {
 		if (!this.allowZoomOut()) return;
 		if (this.mode == 'year') {
@@ -559,7 +559,7 @@ var DatePicker = new Class({
 		}
 		this.render('fade');
 	},
-	
+
 	previous: function() {
 		if (this.mode == 'decades') {
 			this.d.setFullYear(this.d.getFullYear() - this.options.yearsPerPage);
@@ -570,7 +570,7 @@ var DatePicker = new Class({
 		}
 		this.render('left');
 	},
-	
+
 	next: function() {
 		if (this.mode == 'decades') {
 			this.d.setFullYear(this.d.getFullYear() + this.options.yearsPerPage);
@@ -581,7 +581,7 @@ var DatePicker = new Class({
 		}
 		this.render('right');
 	},
-	
+
 	close: function(e, force) {
 		if (!$(this.picker)) return;
 		var clickOutside = ($chk(e) && e.target != this.picker && !this.picker.hasChild(e.target) && e.target != this.visual);
@@ -593,13 +593,13 @@ var DatePicker = new Class({
 			}
 		}
 	},
-	
+
 	destroy: function() {
 		this.picker.destroy();
 		this.picker = null;
 		this.options.onClose();
 	},
-	
+
 	select: function(values) {
 		this.choice = $merge(this.choice, values);
 		var d = this.dateFromObject(this.choice);
@@ -608,16 +608,16 @@ var DatePicker = new Class({
 		this.options.onSelect(d);
 		this.close(null, true);
 	},
-	
+
 	leadZero: function(v) {
 		return v < 10 ? '0'+v : v;
 	},
-	
+
 	format: function(t, format) {
 		var f = '';
 		var h = t.getHours();
 		var m = t.getMonth();
-		
+
 		for (var i = 0; i < format.length; i++) {
 			switch(format.charAt(i)) {
 				case '\\': i++; f+= format.charAt(i); break;
@@ -645,13 +645,13 @@ var DatePicker = new Class({
 		}
 		return f;
 	},
-	
+
 	unformat: function(t, format) {
 		var d = new Date();
 		var a = {};
 		var c, m;
 		t = t.toString();
-		
+
 		for (var i = 0; i < format.length; i++) {
 			c = format.charAt(i);
 			switch(c) {
@@ -666,18 +666,18 @@ var DatePicker = new Class({
 				case 'j': r = '[1-9]|[12][0-9]|3[01]'; break;
 				case 'D': r = '[A-Za-z]{'+this.options.dayShort+'}'; break;
 				case 'l': r = '[A-Za-z]+'; break;
-				case 'G': 
-				case 'H': 
-				case 'g': 
+				case 'G':
+				case 'H':
+				case 'g':
 				case 'h': r = '[0-9]{1,2}'; break;
 				case 'a': r = '(am|pm)'; break;
 				case 'A': r = '(AM|PM)'; break;
-				case 'i': 
+				case 'i':
 				case 's': r = '[012345][0-9]'; break;
 				case 'U': r = '-?[0-9]+$'; break;
 				default:  r = null;
 			}
-			
+
 			if ($chk(r)) {
 				m = t.match('^'+r);
 				if ($chk(m)) {
@@ -691,7 +691,7 @@ var DatePicker = new Class({
 				t = t.substring(1);
 			}
 		}
-		
+
 		for (c in a) {
 			var v = a[c];
 			switch(c) {
@@ -704,16 +704,16 @@ var DatePicker = new Class({
 				case 'F': d.setMonth(this.options.months.indexOf(v)); break;
 				case 'd':
 				case 'j': d.setDate(v); break;
-				case 'G': 
+				case 'G':
 				case 'H': d.setHours(v); break;
-				case 'g': 
+				case 'g':
 				case 'h': if (a['a'] == 'pm' || a['A'] == 'PM') { d.setHours(v == 12 ? 0 : v.toInt() + 12); } else { d.setHours(v); } break;
 				case 'i': d.setMinutes(v); break;
 				case 's': d.setSeconds(v); break;
 				case 'U': d = new Date(v.toInt() * 1000);
 			}
 		};
-		
+
 		return d;
 	}
 });
